@@ -93,7 +93,6 @@ int main()
         bg.display(window);
         grass.display(window);
         player.display(window);
-        // player.display(window);
 
         window.display();
         std::cout << player.sprite.getPosition().x << '\n';
