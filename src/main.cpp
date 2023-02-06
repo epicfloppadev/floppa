@@ -38,10 +38,6 @@ int main()
         }
         Time elapsed = clock.restart();
         float dt = elapsed.asSeconds();
-        /* if (Keyboard::isKeyPressed(Keyboard::A))
-            player.position += {-10.f, 0.f};
-        if (Keyboard::isKeyPressed(Keyboard::D))
-            player.position += {10.f, 0.f};*/
         if (Keyboard::isKeyPressed(Keyboard::A))
         {
             accelerationV = 2;
