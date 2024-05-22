@@ -1,20 +1,25 @@
 // Comp issues win any rez other tham 1920*1080
 #include "smth.hpp"
 #include "grass.cpp"
+#include "tile.cpp"
 using namespace sf;
 bool jumping = 0;
 float jump_velocity = 0;
-float accelerationV = 0.2;
+float accelerationV = 0.5;
 float speedV = 0;
 bool o_g = 0;
 int main()
 {
-    Music battle;
-    battle.openFromFile("Audio/battle.wav");
-    battle.play();
+
+    tile tiles[8][14];
+    loadTiles(tiles);
+    //
+    // Music battle;
+    // battle.openFromFile("Audio/battle-of-the-dragons-8037.wav");
+    // battle.play();
     Object player = {{500, 500}, 0},
            bg{{1000, 1000}, 0};
-    if (!player.texture.loadFromFile("Images/big-floppa-player.png") || !bg.texture.loadFromFile("Images/bluemoon.png"))
+    if (!player.texture.loadFromFile("Images/tile.jpg") || !bg.texture.loadFromFile("Images/bg.jpg"))
     {
         return -1;
     }
@@ -35,13 +40,10 @@ int main()
         }
         Time elapsed = clock.restart();
         float dt = elapsed.asSeconds();
-        /* if (Keyboard::isKeyPressed(Keyboard::A))
-            player.position += {-10.f, 0.f};
-        if (Keyboard::isKeyPressed(Keyboard::D))
-            player.position += {10.f, 0.f};*/
+
         if (Keyboard::isKeyPressed(Keyboard::A))
         {
-            accelerationV = 2;
+
             speedV += accelerationV;
             if (speedV > maxSpeedV)
                 speedV = maxSpeedV;
@@ -49,11 +51,14 @@ int main()
         }
         if (Keyboard::isKeyPressed(Keyboard::D))
         {
-            accelerationV = 2;
             speedV += accelerationV;
             if (speedV > maxSpeedV)
                 speedV = maxSpeedV;
             player.position += {speedV, 0.f};
+        }
+        else
+        {
+            speedV -= (-1 * bool(speedV < 0)) * accelerationV;
         }
         if (Keyboard::isKeyPressed(Keyboard::Space) && !jumping)
         {
@@ -61,33 +66,38 @@ int main()
             o_g = 0;
             jump_velocity = sqrt(2 * GRAVITY * JUMP_HEIGHT);
         }
-        if (jumping)
+        if (o_g == 0)
         {
-            if (o_g == 0)
-            {
-                player.position.y -= jump_velocity * dt;
-                jump_velocity -= GRAVITY * dt;
-            }
-            else
-                player.position.y = grass.getPosition().y - player.texture.getSize().y * player.sprite.getScale().y;
+            player.position.y -= jump_velocity * dt;
+            jump_velocity -= GRAVITY * dt;
         }
-        else
-        {
-            player.position += {0.f, 5.f};
-        }
-
         if (touch_grass_lol(player, grass))
         {
             jumping = 0;
+            o_g = 1;
             player.position.y = grass.getPosition().y - player.texture.getSize().y * player.sprite.getScale().y;
         }
         if (dt < 1.f / 60.f)
         {
             sleep(sf::seconds(1.f / 60.f - dt));
         }
+        std::cout<<tiles[1][1].sprite.getTexture().getSize();
+
         window.clear();
-        window.draw(bg.sprite);
-        window.draw(grass);
+        //   window.draw(bg.sprite);
+        // window.draw(grass);
+        for (int i = 0; i <= 6; i++)
+        {
+            for (int j = 0; j <= 12; j++)
+            {
+                if (tiles[i][j].activated == 0)
+                {
+
+                    display_tile(tiles[i][j], window);
+                    // std::cout<<tiles[i][j].position.x<<' '<<tiles[i][j].position.y<<std::endl;
+                }
+            }
+        }
         display_smth(player, window);
         window.display();
     }
