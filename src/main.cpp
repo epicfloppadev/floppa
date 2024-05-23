@@ -81,7 +81,6 @@ int main()
         {
             sleep(sf::seconds(1.f / 60.f - dt));
         }
-        std::cout<<tiles[1][1].sprite.getTexture().getSize();
 
         window.clear();
         //   window.draw(bg.sprite);
