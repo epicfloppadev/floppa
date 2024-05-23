@@ -19,7 +19,7 @@ int main()
     // battle.play();
     Object player = {{500, 500}, 0},
            bg{{1000, 1000}, 0};
-    if (!player.texture.loadFromFile("Images/tile.jpg") || !bg.texture.loadFromFile("Images/bg.jpg"))
+    if (!player.texture.loadFromFile("Images/big-floppa-player.png") || !bg.texture.loadFromFile("Images/bg.jpg"))
     {
         return -1;
     }
